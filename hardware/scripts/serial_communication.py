@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import serial
 import rospy
+import time
 
 if __name__ == '__main__':
     rospy.init_node("serial_communication", anonymous=True)
@@ -13,7 +14,10 @@ if __name__ == '__main__':
         bytesize=serial.EIGHTBITS
     )
 
-    rate = rospy.Rate(1)
+    rate = rospy.Rate(30)
     while not rospy.is_shutdown():
-        print(ser.isOpen())
+        if ser.isOpen():
+            ser.write("sd:0:-40:40:0\n")
+            ##time.sleep(10)
+            ##ser.write("sd:0:0:0:0\n")
         rate.sleep()
