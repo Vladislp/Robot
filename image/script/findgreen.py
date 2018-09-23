@@ -18,7 +18,29 @@ while(True):
     mask = cv2.inRange(hsv, lower_green, upper_green)
 
     res = cv2.bitwise_and(frame, frame, mask = mask)
-    cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+                            cv2.CHAIN_APPROX_SIMPLE)[-2]
+
+    center = None
+    lenq = 10 # Maximum number of center points stored in memory
+
+    if len(cnts) > 0:
+
+        #print(len(cnts))
+
+        c = max(cnts, key=cv2.contourArea)
+        ((x,y), radius) = cv2.minEnclosingCircle(c)
+        M = cv2.moments(c)
+        if radius >7:
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+        print(center)
+
+
+
+    #cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+
 
 
     # Display the resulting frame
