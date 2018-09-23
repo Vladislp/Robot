@@ -14,10 +14,11 @@ if __name__ == '__main__':
         bytesize=serial.EIGHTBITS
     )
 
-    rate = rospy.Rate(30)
+    rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         if ser.isOpen():
             ser.write("sd:0:-40:40:0\n")
             ##time.sleep(10)
             ##ser.write("sd:0:0:0:0\n")
+            print("working")
         rate.sleep()
