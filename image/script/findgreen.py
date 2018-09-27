@@ -41,8 +41,6 @@ while(True):
     #cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
 
-
-
     # Display the resulting frame
     cv2.imshow("frame",res)
     if cv2.waitKey(1) & 0xFF == ord('q'):
