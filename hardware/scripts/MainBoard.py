@@ -74,4 +74,4 @@ class ComportMainboard(threading.Thread):
         else:
             print('mainboard: opening failed')
             self.close()
-            return
+        return

@@ -17,7 +17,7 @@ if __name__ == '__main__':
     rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         if ser.isOpen():
-            ##ser.write("sd:0:-40:40:40\n")
+            #ser.write("sd:0:-40:40:0\n")
             ser.write("d:1200\n")
             ##time.sleep(10)
             ##ser.write("sd:0:0:0:0\n")
