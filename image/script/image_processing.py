@@ -18,7 +18,7 @@ class ImageProcessing():
         self.profile = self.pipeline.start(self.config)
         self.align_to = rs.stream.color
         self.align = rs.align(self.align_to)
-
+    
     def spin_once(self):
 
         # Get frameset of color and depth
