@@ -4,8 +4,6 @@ import time
 import subprocess
 import rospy
 
-# Martin Appo implementation of comunication with mainboard. File from
-#https://bitbucket.org/MartinAppo/diploaf-2017/src/master/hardware_module/src/hardware_module/comport_mainboard.py
 
 class ComportMainboard(threading.Thread):
     connection = None
@@ -42,14 +40,9 @@ class ComportMainboard(threading.Thread):
             except:
                 print('mainboard: err write ' + comm)
 
-    def servo(self, value):
-        msg = "v{}".format(value)
+    def launch_motor(self, motor_one, motor_two, motor_three, motor_four):
         if self.connection_opened:
-            self.write(msg)
-
-    def launch_motor(self, value):
-        if self.connection_opened:
-            self.write("d{}".format(value))
+            self.write("sd:{}:{}:{}:{}\n".format(motor_one, motor_two, motor_three, motor_four))
 
     def close(self):
         if self.connection is not None and self.connection.isOpen():  # close coil
@@ -60,18 +53,13 @@ class ComportMainboard(threading.Thread):
                 print('mainboard: err connection close')
             self.connection = None
 
-    def Readmsgs(self,verbos=False):
-	try:
-	    self.connection.flush()
-            if verbos:
-	        print(self.connection.readline())
-	except Exception as ex:
-	    print(ex)
-
     def run(self):
         if self.open():  # open serial connections
             print('mainboard: opened')
         else:
             print('mainboard: opening failed')
             self.close()
-        return
+            return
+    def set_throw(self, speed):
+        self.write("d:{}".format(speed))
+
