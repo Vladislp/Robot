@@ -2,15 +2,24 @@
 
 import rospy
 from geometry_msgs.msg import Point
+from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Vector3
 
 
 class GameLogic():
 
     def __init__(self):
         self.sub = rospy.Subscriber("ball_coordinates", Point, self.callback)
+        self.robot_movement_pub = rospy.Publisher('robot_movement')
+        self.ball_points = None
 
     def callback(self, point):
-        rospy.loginfo("point {}".format(point))
+        self.ball_points = point
+
+    def spin_once(self):
+        center = 320
+
+    
 
 
 if __name__ == "__main__":
