@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 import rospy
-from hardware.main import CompartMainboard
+from hardware.MainBoard import ComportMainboard
 from geometry_msgs.msg import Point
 
 
-class Serial_Communication():
+class SerialCommunication():
 
     def __init__(self):
         self.sub = rospy.Subscriber("ball_coordinates", Point, self.callback)
-        self.main_board = MainBoard()
+        self.main_board = ComportMainboard()
         self.main_board.run()
         self.point = None
 
@@ -19,15 +19,16 @@ class Serial_Communication():
 
     def spin_once(self):
         center = 320
-        if self.point == None:
+        if self.point is None:
             self.main_board.launch_motor(10, 10, 10, 0)
-        elif (self.point < center + 20 and self.point > center - 20):
+        elif center + 20 > self.point > center - 20:
             self.main_board.launch_motor(0, -10, 10, 0)
+
 
 if __name__ == '__main__':
     rospy.init_node('serial_communication', anonymous=True)
-    rate = rospy.Rate(2) # 2hz
-    serial_communication = Serial_Communication()
+    rate = rospy.Rate(25)
+    serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
         serial_communication.spin_once()

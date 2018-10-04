@@ -1,0 +1,7 @@
+
+<launch>
+    <node pkg="game" type="Game_Logic_Node.py"
+        name="Logic" output="screen" />
+    <node pkg="image" type="image_processing.py"
+        name="image_processing" output="screen" />
+</launch>

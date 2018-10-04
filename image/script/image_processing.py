@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import pyrealsense2 as rs
 import rospy
+from geometry_msgs.msg import Point
 
 
 class ImageProcessing():
@@ -17,6 +18,11 @@ class ImageProcessing():
         self.profile = self.pipeline.start(self.config)
         self.align_to = rs.stream.color
         self.align = rs.align(self.align_to)
+        self.pub = rospy.Publisher("ball_coordinates", Point, queue_size=10)
+        self.hsv = None
+        self.lower_green = None
+        self.upper_green = None
+
 
     def spin_once(self):
 
@@ -53,7 +59,8 @@ class ImageProcessing():
             M = cv2.moments(c)
             if radius > 7:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            print(center)
+                #print(center)
+                self.pub.publish(Point(center[0],center[1],0))
 
         # cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -63,32 +70,6 @@ class ImageProcessing():
         # Display the resulting frame
         cv2.imshow("frame", res)
         cv2.waitKey(1)
-
-    def detect_ball(self):
-        mask = cv2.inRange(self.hsv, lower_green, upper_green)
-        # rospy.loginfo("{} {}".format(len(self.hsv[0]), len(mask[0])))
-
-        im2, contours, hierarchie = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        biggest_ball_size = 0
-        biggest_ball_rect = None
-        # rospy.loginfo("Found {} contours".format(len(contours)))
-
-        for contour in contours:
-            # rospy.loginfo("found a contour")
-            contour_size = cv2.contourArea(contour)
-            if contour_size > biggest_ball_size:
-                biggest_ball_rect = cv2.boundingRect(contour)
-                biggest_ball_size = contour_size
-
-        if biggest_ball_rect is not None:
-            x, y, w, h = biggest_ball_rect
-            center_x = (x + w) / 2
-            center_y = (y + h) / 2
-            rospy.loginfo("Found the biggest ball with bounding rect: {}".format(biggest_ball_rect))
-            # rospy.loginfo("Ball: {} {}".format(center_x, center_y))
-            #self.pub.publish(Point(center_x, center_y, 0))
-
 
 
 if __name__ == '__main__':
