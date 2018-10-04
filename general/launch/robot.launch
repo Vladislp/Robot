@@ -2,7 +2,7 @@
 
 <node name="serial_communication" pkg="hardware" type="serial_communication.py" output="screen"/>
 <node name="camera_node" pkg="image" type="image_processing.py" output="screen"/>
-<node name="Game_Logic_Node" pkg="game" type="Game_Logic_Node.py" output="screen"/>
+<node name="GameLogic" pkg="game" type="Game_Logic_Node.py" output="screen"/>
 
 
 </launch>

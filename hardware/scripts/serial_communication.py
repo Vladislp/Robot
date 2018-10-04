@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from hardware.MainBoard import MainBoard
+from hardware.main import CompartMainboard
 from geometry_msgs.msg import Point
 
 

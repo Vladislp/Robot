@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+
 import rospy
 from geometry_msgs.msg import Point
 
@@ -11,10 +12,10 @@ class GameLogic():
         pass
 
 if __name__ == "__main__":
-    rospy.init_node('GameLogic', anonymous=True)
+    rospy.init_node('Game_Logic_Node', anonymous=True)
     rate = rospy.Rate(2)
 
     game_logic = GameLogic()
 
     while not rospy.is_shutdown():
-        rate.sleep()_
+        rate.sleep()
