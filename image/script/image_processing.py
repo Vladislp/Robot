@@ -59,7 +59,7 @@ class ImageProcessing():
             M = cv2.moments(c)
             if radius > 7:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                #print(center)
+                print(center)
                 self.pub.publish(Point(center[0],center[1],0))
 
         # cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
