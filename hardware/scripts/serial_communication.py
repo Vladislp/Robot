@@ -43,6 +43,15 @@ class SerialCommunication():
                                           WHEEL_DISTANCE_FROM_CENTER, angular_speed)
         self.define_wheels(round(wheel1, 2), round(wheel2, 2), round(wheel3, 2))
 
+    def spin_oncee(self):
+
+        center = 320
+
+        if self.point == None:
+            self.main_board.launch_motor(10, 10, 10, 0)
+        elif (self.point < center + 20 and self.point > center - 20):
+            self.main_board.launch_motor(0, -10, 10, 0)
+
     def define_wheels(self, wheel1, wheel2, wheel3):
         if (340 > middle > 300):
             self.wheel_one_speed = 0
@@ -55,6 +64,7 @@ class SerialCommunication():
             self.wheel_two_speed = 10
             self.wheel_three_speed = 10
 
+
         self.main_board.launch_motor(self.wheel_one_speed, self.wheel_two_speed, self.wheel_three_speed, 0)
 
         ###########################################
@@ -63,6 +73,8 @@ class SerialCommunication():
         self.prepare_movement(point.x, point.y, point.z)
         global middle
         middle = point.x
+
+
     # def spin_once(self):
     # center = 320
     # if self.point is None:
@@ -77,5 +89,5 @@ if __name__ == '__main__':
     serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
-        # serial_communication.spin_once()
+        SerialCommunication.spin_oncee()
         rate.sleep()
