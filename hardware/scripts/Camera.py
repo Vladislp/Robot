@@ -58,3 +58,14 @@ class ImageHandler():
         cam_angle = 45
         cam_height = 200
         return dist
+
+if __name__ == '__main__':
+    rospy.init_node('image_processing', anonymous=True)
+    rate = rospy.Rate(60)  # 60hz
+    cam_proc = ImageProcessing()
+    cam_proc.run()
+
+    while not rospy.is_shutdown():
+        cam_proc.get_frame()
+        cam_proc.detect_ball()
+        rate.sleep()
