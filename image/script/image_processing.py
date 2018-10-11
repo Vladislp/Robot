@@ -6,7 +6,6 @@ import pyrealsense2 as rs
 import rospy
 from geometry_msgs.msg import Point
 
-
 class ImageProcessing():
 
     def __init__(self):
@@ -68,8 +67,9 @@ class ImageProcessing():
         # print(hsv[320][240])
 
         # Display the resulting frame
-        cv2.imshow("frame", res)
-        cv2.waitKey(1)
+        #cv2.imshow("frame", res)
+        #cv2.waitKey(1)
+        #test
 
 
 if __name__ == '__main__':
