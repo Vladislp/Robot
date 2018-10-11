@@ -19,12 +19,10 @@ middle = None
 class SerialCommunication():
 
     def __init__(self):
-        self.sub = rospy.Subscriber("ball_coordinates", Point, self.callback)
-        self.robot_movement_pub = rospy.Subscriber("robot_movement", Point, queue_size=10)
-        # self.basket_sub = rospy.Subscriber("basket_coordinates", Point, self.callback)
+        self.sub = rospy.Subscriber("robot_movement", Point, self.callback)
         self.main_board = ComportMainboard()
         self.main_board.run()
-        self.ball_point = None
+        #self.ball_point = None
 
         self.wheel_one_speed = 0
         self.wheel_two_speed = 0
@@ -49,6 +47,7 @@ class SerialCommunication():
 
     def callback(self, point):
         self.set_movement(point.x, point.y, point.z)
+        rospy.loginfo("Test")
 
     def define_wheels(self, wheel1, wheel2, wheel3):
 
