@@ -56,7 +56,7 @@ class ImageProcessing():
             c = max(cnts, key=cv2.contourArea)
             ((x, y), radius) = cv2.minEnclosingCircle(c)
             M = cv2.moments(c)
-            if radius > 7:
+            if radius > 13:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 print(center)
                 self.pub.publish(Point(center[0],center[1],0))

@@ -47,7 +47,6 @@ class SerialCommunication():
 
     def callback(self, point):
         self.set_movement(point.x, point.y, point.z)
-        rospy.loginfo("Test")
 
     def define_wheels(self, wheel1, wheel2, wheel3):
 

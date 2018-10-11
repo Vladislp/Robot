@@ -19,26 +19,27 @@ class GameLogic():
         self.ball = point
 
     def spin_once(self):
-        #center = 320
-
-        rospy.loginfo("string")
+        center = 240
 
         if self.ball is None:
             self.rotate()
-        else:
-            self.stop()
+        elif (self.ball.y > 160 and self.ball.y < 180):
+            self.rounding()
 
     def move_forward(self):
-        self.robot_movement_pub.publish(Point(30, 30, 0))
+        self.robot_movement_pub.publish(Point(40, -90, 0))
 
     def move_backward(self):
-        self.robot_movement_pub.publish(Point(30, -30, 0))
+        self.robot_movement_pub.publish(Point(20, 90, 0))
 
     def rotate(self):
-        self.robot_movement_pub.publish(Point(0, 0, 40))
+        self.robot_movement_pub.publish(Point(0, 0, 10))
 
     def stop(self):
         self.robot_movement_pub.publish(Point(0, 0, 0))
+
+    def rounding(self):
+        self.robot_movement_pub.publish(Point(10, 0, 20))
 
 if __name__ == "__main__":
     rospy.init_node('game_logic', anonymous=True)
