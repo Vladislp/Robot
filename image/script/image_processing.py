@@ -5,7 +5,7 @@ import cv2
 import pyrealsense2 as rs
 import rospy
 from geometry_msgs.msg import Point
-
+from sensor_msgs.msg import CompressedImage
 
 class ImageProcessing():
 
@@ -22,6 +22,8 @@ class ImageProcessing():
         self.hsv = None
         self.lower_green = None
         self.upper_green = None
+
+        self.debug_img_pub = rospy.Publisher("image_processing/compressed", CompressedImage, queue_size=1)
 
 
     def spin_once(self):
@@ -43,8 +45,8 @@ class ImageProcessing():
         # Our operations on the frame come here
         hsv = cv2.cvtColor(frame_np, cv2.COLOR_BGR2HSV)
 
-        lower_green = np.array([50, 120, 60])
-        upper_green = np.array([70, 175, 100])
+        lower_green = np.array([5, 100, 100])
+        upper_green = np.array([30, 150, 150])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         res = cv2.bitwise_and(frame_np, frame_np, mask=mask)
@@ -59,18 +61,35 @@ class ImageProcessing():
             M = cv2.moments(c)
             if radius > 7:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                print(center)
+                #print(center)
                 self.pub.publish(Point(center[0],center[1],0))
-
+        # else:
+        #     self.pub.publish(Point(-1, -1, -1))
         # cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # TO get center pixel values of image
-        # print(hsv[320][240])
+        print(hsv[320][240])
 
         # Display the resulting frame
         cv2.imshow("frame", res)
-        cv2.waitKey(1)
+        #cv2.waitKey(1)
+        #test
 
+        self.publish_img(mask)
+
+
+
+    def publish_img(self, image):
+
+        msg = CompressedImage()
+        msg.header.stamp = rospy.Time.now()
+        msg.format = "jpeg"
+
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 80]
+        result, encimg = cv2.imencode('.jpg', image, encode_param)
+        msg.data = np.array(encimg).tostring()
+
+        self.debug_img_pub.publish(msg)
 
 if __name__ == '__main__':
     rospy.init_node("image_processing", anonymous=True)
