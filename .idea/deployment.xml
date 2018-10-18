@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Robot">
+  <component name="PublishConfigData" serverName="robot">
     <serverData>
-      <paths name="Robot">
+      <paths name="robot">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/vladislav/catkin_ws/src" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/catkin_ws/src" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -45,8 +45,8 @@ class ImageProcessing():
         # Our operations on the frame come here
         hsv = cv2.cvtColor(frame_np, cv2.COLOR_BGR2HSV)
 
-        lower_green = np.array([5, 100, 100])
-        upper_green = np.array([30, 150, 150])
+        lower_green = np.array([120, 27, 100])
+        upper_green = np.array([155, 45, 140])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         res = cv2.bitwise_and(frame_np, frame_np, mask=mask)
@@ -68,10 +68,10 @@ class ImageProcessing():
         # cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # TO get center pixel values of image
-        print(hsv[320][240])
+        #print(hsv[320][240])
 
         # Display the resulting frame
-        cv2.imshow("frame", res)
+        #cv2.imshow("frame", res)
         #cv2.waitKey(1)
         #test
 
