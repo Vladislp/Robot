@@ -11,26 +11,24 @@ class GameLogic():
 
     def __init__(self):
         self.sub = rospy.Subscriber("ball_coordinates", Point, self.ball_callback)
-        self.basket_sub = rospy.Subscriber("basket_coordinates", Point, self.basket_callback)
+        # self.basket_sub = rospy.Subscriber("basket_coordinates", Point, self.basket_callback)
         self.robot_movement_pub = rospy.Publisher('robot_movement', Point, queue_size=10)
         self.ball = None
-        self.basket = None
+        # self.basket = None
 
     def ball_callback(self, point):
         self.ball = point
 
-    def basket_callback(self, point):
-        self.basket = point
+    # def basket_callback(self, point):
+    # self.basket = point
 
     def spin_once(self):
         center = 240
 
         if self.ball is None:
             self.rotate()
-        else:
-            self.stop()
-
-
+        elif 160 < self.ball.y < 180:
+            self.rounding()
 
     def move_forward(self):
         self.robot_movement_pub.publish(Point(30, 30, 0))
@@ -46,6 +44,7 @@ class GameLogic():
 
     def rounding(self):
         self.robot_movement_pub.publish(Point(10, 0, 20))
+
 
 if __name__ == "__main__":
     rospy.init_node('game_logic', anonymous=True)
