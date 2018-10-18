@@ -45,8 +45,8 @@ class ImageProcessing():
         # Our operations on the frame come here
         hsv = cv2.cvtColor(frame_np, cv2.COLOR_BGR2HSV)
 
-        lower_green = np.array([95, 8, 200])
-        upper_green = np.array([100, 10, 204])
+        lower_green = np.array([60, 100, 40])
+        upper_green = np.array([90, 255, 255])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         res = cv2.bitwise_and(frame_np, frame_np, mask=mask)
@@ -62,6 +62,7 @@ class ImageProcessing():
             if radius > 7:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 print(center)
+                #print(depth_image_np[center[1]][center[0]]) #palli Kaugus
                 self.pub.publish(Point(center[0],center[1],0))
         # else:
         #     self.pub.publish(Point(-1, -1, -1))

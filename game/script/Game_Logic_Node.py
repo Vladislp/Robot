@@ -5,6 +5,7 @@ from geometry_msgs.msg import Point
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 from cv_bridge import CvBridge, CvBridgeError
+from time import time
 
 
 class GameLogic():
@@ -23,18 +24,21 @@ class GameLogic():
     # self.basket = point
 
     def spin_once(self):
-        center = 240
+        center = 320
 
         if self.ball is None:
             self.rotate()
-        elif 160 < self.ball.y < 180:
-            self.rounding()
+            print("rotate")
+        elif (self.ball.x < center - 20 and self.ball.x > center + 20):
+            self.stop()
+            print("stop")
+            time.sleep(10)
 
     def move_forward(self):
-        self.robot_movement_pub.publish(Point(30, 30, 0))
+        self.robot_movement_pub.publish(Point(20, 90, 0))
 
     def move_backward(self):
-        self.robot_movement_pub.publish(Point(30, -30, 0))
+        self.robot_movement_pub.publish(Point(40, -90, 0))
 
     def rotate(self):
         self.robot_movement_pub.publish(Point(0, 0, 20))

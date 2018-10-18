@@ -75,12 +75,11 @@ class SerialCommunication():
     # global middle
     # middle = point.x
 
-    # def spin_once(self):
-    # center = 320
-    # if self.point is None:
-    # self.main_board.launch_motor(10, 10, 10, 0)
-    # elif center + 20 > self.point > center - 20:
-    # self.main_board.launch_motor(0, -10, 10, 0)
+    def spin_once(self):
+        print("Reading")
+        print(self.main_board.read())
+
+
 
 
 if __name__ == '__main__':
@@ -89,5 +88,5 @@ if __name__ == '__main__':
     serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
-        # serial_communication.spin_oncee()
+        serial_communication.spin_once()
         rate.sleep()
