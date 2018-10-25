@@ -36,6 +36,13 @@ class SerialCommunication():
         turn_speed = wheel_distance_from_center - robot_angular_velocity
         return move_speed + turn_speed
 
+    def move(com,move_speed):
+        com.write("sd:{}:{}:{}".format(move_speed[0], move_speed[1], move_speed[2]))
+        com.Readmsgs()
+
+    def move_command(move_speed):
+        return "sd:{}:{}:{}".format(move_speed[0], move_speed[3], move_speed[2])
+
     def set_movement(self, linear_speed, direction_degrees, angular_speed):
         wheel1 = self.get_speed_for_wheel(WHEEL_ONE_ANGLE, direction_degrees, linear_speed, WHEEL_DISTANCE_FROM_CENTER,
                                           angular_speed)
