@@ -61,7 +61,8 @@ class ImageProcessing():
             M = cv2.moments(c)
             if radius > 7:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                #print(center)
+                print(center)
+                #print(depth_image_np[center[1]][center[0]]) #palli Kaugus
                 self.pub.publish(Point(center[0],center[1],0))
         # else:
         #     self.pub.publish(Point(-1, -1, -1))

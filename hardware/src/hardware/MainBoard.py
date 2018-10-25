@@ -42,6 +42,14 @@ class ComportMainboard(threading.Thread):
             except:
                 print('mainboard: err write ' + comm)
 
+    def read(self):
+
+        full, single = "", ""
+        while single != "\n":
+            single = self.connection.read()
+            full += single
+        return full
+
     def launch_motor(self, motor_one, motor_two, motor_three, motor_four):
         if self.connection_opened:
             self.write("sd:{}:{}:{}:{}\n".format(motor_one, motor_two, motor_three, motor_four))
@@ -62,6 +70,6 @@ class ComportMainboard(threading.Thread):
             print('mainboard: opening failed')
             self.close()
             return
+
     def set_throw(self, speed):
         self.write("d:{}".format(speed))
-
