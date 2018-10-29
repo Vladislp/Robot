@@ -22,7 +22,7 @@ class SerialCommunication():
         self.sub = rospy.Subscriber("robot_movement", Point, self.callback)
         self.main_board = ComportMainboard()
         self.main_board.run()
-        # self.ball_point = None
+        #self.ball_point = None
 
         self.wheel_one_speed = 0
         self.wheel_two_speed = 0
@@ -49,6 +49,7 @@ class SerialCommunication():
         self.set_movement(point.x, point.y, point.z)
 
     def define_wheels(self, wheel1, wheel2, wheel3):
+
         self.wheel_one_speed = wheel1
         self.wheel_two_speed = wheel2
         self.wheel_three_speed = wheel3
@@ -70,16 +71,17 @@ class SerialCommunication():
 
     ###########################################
 
-    # def callback(self, point):
-    # self.prepare_movement(point.x, point.y, point.z)
-    # global middle
-    # middle = point.x
+    #def callback(self, point):
+        #self.prepare_movement(point.x, point.y, point.z)
+        #global middle
+        #middle = point.x
 
-    def spin_once(self):
-        print("Reading")
-        print(self.main_board.read())
-
-
+    # def spin_once(self):
+    # center = 320
+    # if self.point is None:
+    # self.main_board.launch_motor(10, 10, 10, 0)
+    # elif center + 20 > self.point > center - 20:
+    # self.main_board.launch_motor(0, -10, 10, 0)
 
 
 if __name__ == '__main__':
@@ -88,5 +90,5 @@ if __name__ == '__main__':
     serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
-        serial_communication.spin_once()
+       # serial_communication.spin_oncee()
         rate.sleep()

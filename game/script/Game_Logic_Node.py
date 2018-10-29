@@ -5,40 +5,46 @@ from geometry_msgs.msg import Point
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 from cv_bridge import CvBridge, CvBridgeError
-from time import time
 
 
 class GameLogic():
 
     def __init__(self):
         self.sub = rospy.Subscriber("ball_coordinates", Point, self.ball_callback)
-        # self.basket_sub = rospy.Subscriber("basket_coordinates", Point, self.basket_callback)
+        self.basket_sub = rospy.Subscriber("basket_coordinates", Point, self.basket_callback)
         self.robot_movement_pub = rospy.Publisher('robot_movement', Point, queue_size=10)
         self.ball = None
-        # self.basket = None
+        self.basket = None
 
     def ball_callback(self, point):
-        self.ball = point
+        if point.x < 0:
+            self.ball = None
+        else:
+            self.ball = point
 
-    # def basket_callback(self, point):
-    # self.basket = point
+    def basket_callback(self, point):
+        if point.x < 0:
+            self.basket = point
+        else:
+            self.basket = None
 
     def spin_once(self):
-        center = 320
+        center = 240
 
         if self.ball is None:
             self.rotate()
             print("rotate")
-        elif (self.ball.x < center - 20 and self.ball.x > center + 20):
+        else:
             self.stop()
             print("stop")
-            time.sleep(10)
+
+
 
     def move_forward(self):
-        self.robot_movement_pub.publish(Point(20, 90, 0))
+        self.robot_movement_pub.publish(Point(30, 30, 0))
 
     def move_backward(self):
-        self.robot_movement_pub.publish(Point(40, -90, 0))
+        self.robot_movement_pub.publish(Point(30, -30, 0))
 
     def rotate(self):
         self.robot_movement_pub.publish(Point(0, 0, 20))
@@ -48,7 +54,6 @@ class GameLogic():
 
     def rounding(self):
         self.robot_movement_pub.publish(Point(10, 0, 20))
-
 
 if __name__ == "__main__":
     rospy.init_node('game_logic', anonymous=True)
