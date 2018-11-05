@@ -45,8 +45,8 @@ class ImageProcessing():
         # Our operations on the frame come here
         hsv = cv2.cvtColor(frame_np, cv2.COLOR_BGR2HSV)
 
-        lower_green = np.array([60, 100, 40])
-        upper_green = np.array([90, 255, 255])
+        lower_green = np.array([25, 230, 80])
+        upper_green = np.array([90, 255, 146])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         res = cv2.bitwise_and(frame_np, frame_np, mask=mask)
@@ -59,9 +59,9 @@ class ImageProcessing():
             c = max(cnts, key=cv2.contourArea)
             ((x, y), radius) = cv2.minEnclosingCircle(c)
             M = cv2.moments(c)
-            if radius > 7:
+            if radius > 3:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                #print(center)
+                print(center)
                 self.pub.publish(Point(center[0],center[1],0))
         else:
             self.pub.publish(Point(-1, -1, -1))

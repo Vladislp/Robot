@@ -35,10 +35,10 @@ class ComportMainboard(threading.Thread):
 
     def write(self, comm):
         if self.connection is not None:
-            print("Connection is on")
+            #print("Connection is on")
             try:
                 self.connection.write(comm + '\n')
-                print("Kirjutan {}".format(comm))
+                #print("Kirjutan {}".format(comm))
                 while self.connection.read() != '\n':
                     pass
             except:
@@ -46,7 +46,7 @@ class ComportMainboard(threading.Thread):
 
     def launch_motor(self, motor_one, motor_two, motor_three, motor_four):
         if self.connection_opened:
-            print("Connection is open ")
+            #print("Connection is open ")
             self.write("sd:{}:{}:{}:{}\n".format(motor_one, motor_two, motor_three, motor_four))
 
     def close(self):

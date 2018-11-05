@@ -29,25 +29,27 @@ class GameLogic():
             self.basket = None
 
     def spin_once(self):
-        center = 240
+        center_of_the_field = 340
+        very_close = 400
+
 
         if self.ball is None:
+            print("rotating")
             self.rotate()
-            print("rotate")
-        else:
-            self.stop()
-            print("stop")
+        elif (self.ball.x < 400 and self.ball.x > 340):
+            print("mooving")
+            self.move_forward()
 
 
 
     def move_forward(self):
-        self.robot_movement_pub.publish(Point(30, 30, 0))
+        self.robot_movement_pub.publish(Point(20, 3, 0))
 
     def move_backward(self):
         self.robot_movement_pub.publish(Point(30, -30, 0))
 
     def rotate(self):
-        self.robot_movement_pub.publish(Point(0, 0, 20))
+        self.robot_movement_pub.publish(Point(0, 0, 5))
 
     def stop(self):
         self.robot_movement_pub.publish(Point(0, 0, 0))
