@@ -4,6 +4,7 @@ import rospy
 from hardware.MainBoard import ComportMainboard
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Int16
 import math
 
 WHEEL_ONE_ANGLE = 120
@@ -20,6 +21,7 @@ class SerialCommunication():
 
     def __init__(self):
         self.sub = rospy.Subscriber("robot_movement", Point, self.callback)
+        self.sub_thrower = rospy.Subscriber("thrower", Int16, self.thrower_callback)
         self.main_board = ComportMainboard()
         self.main_board.run()
         #self.ball_point = None
@@ -55,12 +57,17 @@ class SerialCommunication():
     def callback(self, point):
         self.set_movement(point.x, point.y, point.z)
 
+    def thrower_callback(self, speed):
+        print("Callback")
+        self.main_board.set_throw(speed.data)
+
     def define_wheels(self, wheel1, wheel2, wheel3):
 
         self.wheel_one_speed = wheel1
         self.wheel_two_speed = wheel2
         self.wheel_three_speed = wheel3
         self.main_board.launch_motor(self.wheel_one_speed, self.wheel_two_speed, self.wheel_three_speed, 0)
+        self.main_board.read()
 
     # def define_wheels(self, wheel1, wheel2, wheel3):
     # if (340 > middle > 300):
@@ -92,10 +99,10 @@ class SerialCommunication():
 
 
 if __name__ == '__main__':
-    rospy.init_node('serial_communication', anonymous=True)
+    rospy.init_node('serial_communication')
     rate = rospy.Rate(25)
     serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
-       # serial_communication.spin_oncee()
+        #serial_communication.spin_once()
         rate.sleep()

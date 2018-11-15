@@ -21,32 +21,47 @@ class ComportMainboard(threading.Thread):
         self.connection_opened = False
         for port in ports:  # analyze serial ports
             try:
-                while not self.connection_opened and not rospy.is_shutdown():
+                while not rospy.is_shutdown():
                     self.connection = serial.Serial(port, baudrate=115200, timeout=0.8, dsrdtr=True)
-                    self.connection_opened = self.connection.isOpen()
                     time.sleep(0.5)
-                self.connection.flush()
+                    if self.connection.isOpen():
+                        self.connection_opened = True
+                        self.connection.flush()
+                        break
+
                 print "mainboard: Port opened successfully"
+                print(self.connection_opened)
             except Exception as e:
                 print(e)
                 continue
 
         return self.connection_opened
 
+    def read(self):
+        if self.connection_opened:
+            command = ''
+            char = ''
+            while char != '\n' and char is not None:
+                char = self.connection.read()
+                command += char
+            return command
+
     def write(self, comm):
+
+        if not self.connection_opened:
+            print("Connection is not opened")
+            return
         if self.connection is not None:
             #print("Connection is on")
             try:
                 self.connection.write(comm + '\n')
-                #print("Kirjutan {}".format(comm))
-                while self.connection.read() != '\n':
-                    pass
+                print("Kirjutan {}".format(comm))
             except:
                 print('mainboard: err write ' + comm)
 
     def launch_motor(self, motor_one, motor_two, motor_three, motor_four):
         if self.connection_opened:
-            #print("Connection is open ")
+            print("Connection is open ")
             self.write("sd:{}:{}:{}:{}\n".format(motor_one, motor_two, motor_three, motor_four))
 
     def close(self):
@@ -65,5 +80,7 @@ class ComportMainboard(threading.Thread):
             print('mainboard: opening failed')
             self.close()
             return
+
     def set_throw(self, speed):
+        print("d{}".format(speed))
         self.write("d:{}".format(speed))

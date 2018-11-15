@@ -1,0 +1,7 @@
+Values of Blue
+
+lower_blue = np.array([110, 50, 50])
+upper_blue = np.array([130, 255, 255])
+
+lower_blue = np.array([101,247,104])
+upper_blue = np.array([125,255,192])

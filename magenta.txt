@@ -1,0 +1,7 @@
+Values of magenta
+
+lower_magenta = np.array([165, 150, 50])
+upper_magenta = np.array([210, 255, 200])
+
+lower_magenta = np.array([158, 152, 100])
+upper_magenta = np.array([176, 192, 167])

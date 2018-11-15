@@ -1,0 +1,16 @@
+Values of Green
+
+lower_green = np.array([25, 230, 80])
+upper_green = np.array([90, 255, 146])
+
+lower_green = np.array([25, 110, 56])
+upper_green = np.array([90, 255, 146])
+
+lower_green = np.array([60, 100, 40])
+upper_green = np.array([90, 255, 255])
+
+lower_green = np.array([25, 230, 80])
+upper_green = np.array([90, 255, 146])
+
+lower_green = np.array([30, 100, 70])
+upper_green = np.array([70, 255, 255])
