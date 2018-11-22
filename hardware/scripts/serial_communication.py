@@ -22,6 +22,8 @@ class SerialCommunication():
     def __init__(self):
         self.sub = rospy.Subscriber("robot_movement", Point, self.callback)
         self.sub_thrower = rospy.Subscriber("thrower", Int16, self.thrower_callback)
+        self.sub = rospy.Subscriber("servo", Int16, self.servo_callback)
+        self.command_pub = rospy.Publisher("commands", String, queue_size=10)
         self.main_board = ComportMainboard()
         self.main_board.run()
         #self.ball_point = None
@@ -30,6 +32,8 @@ class SerialCommunication():
         self.wheel_two_speed = 0
         self.wheel_three_speed = 0
         ###########################################
+        self.my_ID = 'B'
+        self.my_field = 'B'
 
     def get_speed_for_wheel(self, wheel_angle, drive_angle, robot_speed, wheel_distance_from_center,
                             robot_angular_velocity):
@@ -38,9 +42,9 @@ class SerialCommunication():
         turn_speed = wheel_distance_from_center - robot_angular_velocity
         return move_speed + turn_speed
 
-    def move(com,move_speed):
-        com.write("sd:{}:{}:{}".format(move_speed[0], move_speed[1], move_speed[2]))
-        com.Readmsgs()
+    # def move(com,move_speed):
+    #     com.write("sd:{}:{}:{}".format(move_speed[0], move_speed[1], move_speed[2]))
+    #     com.Readmsgs()
 
     def move_command(move_speed):
         return "sd:{}:{}:{}".format(move_speed[0], move_speed[3], move_speed[2])
@@ -61,6 +65,9 @@ class SerialCommunication():
         print("Callback")
         self.main_board.set_throw(speed.data)
 
+    def servo_callback(self, position):
+        self.main_board.set_servo(position.data)
+
     def define_wheels(self, wheel1, wheel2, wheel3):
 
         self.wheel_one_speed = wheel1
@@ -69,33 +76,20 @@ class SerialCommunication():
         self.main_board.launch_motor(self.wheel_one_speed, self.wheel_two_speed, self.wheel_three_speed, 0)
         self.main_board.read()
 
-    # def define_wheels(self, wheel1, wheel2, wheel3):
-    # if (340 > middle > 300):
-    # self.wheel_one_speed = 0
-    # self.wheel_two_speed = 0
-    # self.wheel_three_speed = 0
-
-    # else:
-
-    # self.wheel_one_speed = 10
-    # self.wheel_two_speed = 10
-    # self.wheel_three_speed = 10
-
-    # self.main_board.launch_motor(self.wheel_one_speed, self.wheel_two_speed, self.wheel_three_speed, 0)
-
-    ###########################################
-
-    #def callback(self, point):
-        #self.prepare_movement(point.x, point.y, point.z)
-        #global middle
-        #middle = point.x
-
-    # def spin_once(self):
-    # center = 320
-    # if self.point is None:
-    # self.main_board.launch_motor(10, 10, 10, 0)
-    # elif center + 20 > self.point > center - 20:
-    # self.main_board.launch_motor(0, -10, 10, 0)
+    def read_mainboard(self):
+        command = self.main_board.read()
+        print('CMD' + command)
+        if command.startswith('<ref:a'):
+            rospy.loginfo(command)
+            command = command.replace('-', '')
+            command = command[6:-1]
+            field_ID = command[0]
+            robot_ID = command[1]
+            actual_command = command[2:]
+            if field_ID == self.my_field and (robot_ID == self.my_ID or robot_ID == 'X'):
+                self.command_pub.publish(String(actual_command))
+                self.main_board.write('rf:aXXACK------')
+                rospy.loginfo(actual_command)
 
 
 if __name__ == '__main__':
@@ -104,5 +98,5 @@ if __name__ == '__main__':
     serial_communication = SerialCommunication()
 
     while not rospy.is_shutdown():
-        #serial_communication.spin_once()
+        serial_communication.read_mainboard
         rate.sleep()

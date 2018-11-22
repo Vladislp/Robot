@@ -9,6 +9,14 @@ class ComportMainboard(threading.Thread):
     connection = None
     connection_opened = False
 
+    lastSpeed = ''
+    lastThrower = ''
+
+    wheelCounter = 0
+    throwercounter = 0
+
+    commandTimeout = 50
+
     def __init__(self):
         threading.Thread.__init__(self)
 
@@ -84,3 +92,6 @@ class ComportMainboard(threading.Thread):
     def set_throw(self, speed):
         print("d{}".format(speed))
         self.write("d:{}".format(speed))
+
+    def set_servo(self, position):
+        self.write("sv:{}".format(position))

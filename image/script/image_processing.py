@@ -46,8 +46,8 @@ class ImageProcessing():
             # only proceed if the basket meets a minimum size
             if w * h > 8:
                 center1 = (int(x), int(y))
-                print("I see blue basket")
-                print(center1)
+                #print("I see blue basket")
+                #print(center1)
         return center1
 
     def LocateMagentaBasket(self):
@@ -93,8 +93,8 @@ class ImageProcessing():
         # Our operations on the frame come here
         hsv = cv2.cvtColor(frame_np, cv2.COLOR_BGR2HSV)
 
-        lower_green = np.array([25, 110, 56])
-        upper_green = np.array([90, 255, 146])
+        lower_green = np.array([30, 100, 70])
+        upper_green = np.array([70, 255, 255])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
 
@@ -116,7 +116,7 @@ class ImageProcessing():
             M = cv2.moments(c)
             if radius > 3:
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                #print("I see ball")
+                print("I see ball")
                 #print(center)
                 self.pub.publish(Point(center[0],center[1],0))
         else:
